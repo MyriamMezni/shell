@@ -1,29 +1,30 @@
 #!/bin/bash
 
-# Utilise yad pour afficher un menu de sélection
-choice=$(yad --title="Gestion de fichiers" --text="Choisissez une option :" --list --column="Options" "Créer un nouveau fichier" "Renommer un fichier" "Gérer les permissions d'un fichier" "Quitter")
+# Utilise zenity pour afficher un menu de sélection
+choice=$(zenity --list --title="Gestion de fichiers" --text="Choisissez une option :" --column="Options" "Créer un nouveau fichier" "Renommer un fichier" "Gérer les permissions d'un fichier" "Quitter")
 
 # Vérifie le choix de l'utilisateur et agit en conséquence
 case "$choice" in
     "Créer un nouveau fichier")
-        new_file_name=$(yad --title="Nouveau fichier" --text="Entrez le nom du nouveau fichier:")
+        new_file_name=$(zenity --entry --title="Nouveau fichier" --text="Entrez le nom du nouveau fichier:")
         touch "$new_file_name"
-        yad --info --title="Succès" --text="Fichier \"$new_file_name\" créé avec succès!"
+        zenity --info --title="Succès" --text="Fichier \"$new_file_name\" créé avec succès!"
         ;;
     "Renommer un fichier")
-        old_file_name=$(yad --title="Ancien nom" --text="Entrez le nom du fichier à renommer:")
-        new_name=$(yad --title="Nouveau nom" --text="Entrez le nouveau nom pour \"$old_file_name\":")
+        old_file_name=$(zenity --entry --title="Ancien nom" --text="Entrez le nom du fichier à renommer:")
+        new_name=$(zenity --entry --title="Nouveau nom" --text="Entrez le nouveau nom pour \"$old_file_name\":")
         mv "$old_file_name" "$new_name"
-        yad --info --title="Succès" --text="Fichier \"$old_file_name\" renommé en \"$new_name\" avec succès!"
+        zenity --info --title="Succès" --text="Fichier \"$old_file_name\" renommé en \"$new_name\" avec succès!"
         ;;
     "Gérer les permissions d'un fichier")
-        file_name=$(yad --title="Fichier" --text="Entrez le nom du fichier dont vous voulez gérer les permissions:")
-        yad --title="Permissions" --form --field="Permissions":CHK "" --field="Lecture":CHK --field="Écriture":CHK --field="Exécution":CHK < <(stat -c "%A %a %U" "$file_name")
+        file_name=$(zenity --entry --title="Fichier" --text="Entrez le nom du fichier dont vous voulez gérer les permissions:")
+        permissions=$(stat -c "%A %a %U" "$file_name")
+        zenity --info --title="Permissions" --text="Permissions du fichier \"$file_name\":\n$permissions"
         ;;
     "Quitter")
-        yad --info --title="Quitter" --text="Au revoir!"
+        zenity --info --title="Quitter" --text="Au revoir!"
         ;;
     *)
-        yad --error --title="Erreur" --text="Choix non valide."
+        zenity --error --title="Erreur" --text="Choix non valide."
         ;;
 esac
