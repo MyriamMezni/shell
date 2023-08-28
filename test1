@@ -18,8 +18,24 @@ case "$choice" in
         ;;
     "Gérer les permissions d'un fichier")
         file_name=$(zenity --entry --title="Fichier" --text="Entrez le nom du fichier dont vous voulez gérer les permissions:")
-        permissions=$(stat -c "%A %a %U" "$file_name")
-        zenity --info --title="Permissions" --text="Permissions du fichier \"$file_name\":\n$permissions"
+        
+        # Affiche une interface graphique pour sélectionner les permissions
+        selected_permissions=$(zenity --list --title="Permissions" --text="Sélectionnez les nouvelles permissions :" --checklist --column="Choix" --column="Permission" FALSE "Lecture" FALSE "Écriture" FALSE "Exécution")
+        
+        # Convertit les choix en une chaîne de permissions
+        new_permissions=""
+        if [[ $selected_permissions == *"Lecture"* ]]; then
+            new_permissions+="r"
+        fi
+        if [[ $selected_permissions == *"Écriture"* ]]; then
+            new_permissions+="w"
+        fi
+        if [[ $selected_permissions == *"Exécution"* ]]; then
+            new_permissions+="x"
+        fi
+        
+        chmod "$new_permissions" "$file_name"
+        zenity --info --title="Succès" --text="Permissions du fichier \"$file_name\" modifiées avec succès!"
         ;;
     "Quitter")
         zenity --info --title="Quitter" --text="Au revoir!"
