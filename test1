@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Utilise zenity pour afficher un menu de sélection
-choice=$(zenity --list --title="Gestion de fichiers" --text="Choisissez une option :" --column="Options" "Créer un nouveau fichier" "Renommer un fichier" "Afficher les permissions d'un fichier" "Gérer les permissions d'un fichier" "Quitter")
+choice=$(zenity --list --title="Gestion de fichiers" --text="Choisissez une option :" --column="Options" "Créer un nouveau fichier" "Renommer un fichier" "Afficher les permissions d'un fichier" "Afficher les fichiers dans un répertoire" "Gérer les permissions d'un fichier" "Quitter")
 
 # Vérifie le choix de l'utilisateur et agit en conséquence
 case "$choice" in
@@ -24,6 +24,13 @@ case "$choice" in
         
         # Ajoute un bouton "Retour à la page d'accueil"
         zenity --info --title="Permissions" --text="Permissions du fichier \"$file_name\":\n$permissions\n\nCliquez sur OK pour revenir à la page d'accueil."
+        ;;
+    "Afficher les fichiers dans un répertoire")
+        directory=$(zenity --file-selection --directory --title="Sélectionnez un répertoire")
+        
+        # Liste les fichiers dans le répertoire
+        files_list=$(ls -A "$directory")
+        zenity --info --title="Fichiers dans le répertoire" --text="Fichiers dans le répertoire \"$directory\":\n$files_list"
         ;;
     "Gérer les permissions d'un fichier")
         file_name=$(zenity --entry --title="Fichier" --text="Entrez le nom du fichier dont vous voulez gérer les permissions:")
