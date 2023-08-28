@@ -19,9 +19,11 @@ case "$choice" in
     "Afficher les permissions d'un fichier")
         file_name=$(zenity --entry --title="Fichier" --text="Entrez le nom du fichier dont vous voulez afficher les permissions:")
         
-        # Utilise la commande ls pour afficher les permissions du fichier
-        permissions=$(ls -l "$file_name")
-        zenity --info --title="Permissions" --text="Permissions du fichier \"$file_name\":\n$permissions"
+        # Utilise la commande stat pour afficher les permissions du fichier
+        permissions=$(stat -c "%A %a %U" "$file_name")
+        
+        # Ajoute un bouton "Retour à la page d'accueil"
+        zenity --info --title="Permissions" --text="Permissions du fichier \"$file_name\":\n$permissions\n\nCliquez sur OK pour revenir à la page d'accueil."
         ;;
     "Gérer les permissions d'un fichier")
         file_name=$(zenity --entry --title="Fichier" --text="Entrez le nom du fichier dont vous voulez gérer les permissions:")
