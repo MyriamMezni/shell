@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Affiche une boîte de dialogue avec deux choix : "Créer un dossier" ou "Créer un fichier"
+choice=$(zenity --list --title="Créer un dossier ou un fichier" --text="Choisissez une option :" --radiolist --column "Sélection" --column "Option" FALSE "Créer un dossier" FALSE "Créer un fichier")
+
+# Vérifie le choix de l'utilisateur et agit en conséquence
+case "$choice" in
+    "Créer un dossier")
+        new_folder_name=$(zenity --entry --title="Nouveau dossier" --text="Entrez le nom du nouveau dossier:")
+        mkdir "$new_folder_name"
+        zenity --info --title="Succès" --text="Dossier \"$new_folder_name\" créé avec succès!"
+        ;;
+    "Créer un fichier")
+        new_file_name=$(zenity --entry --title="Nouveau fichier" --text="Entrez le nom du nouveau fichier:")
+        touch "$new_file_name"
+        zenity --info --title="Succès" --text="Fichier \"$new_file_name\" créé avec succès!"
+        ;;
+    *)
+        zenity --error --title="Erreur" --text="Choix non valide."
+        ;;
+esac
