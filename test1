@@ -1,13 +1,37 @@
-1. Nom: John Doe, Âge: 30, Email: john.doe@example.com
-2. Nom: Jane Smith, Âge: 25, Email: jane.smith@example.com
-3. Nom: Bob Johnson, Âge: 35, Email: bob.johnson@example.com
-4. Nom: Alice Brown, Âge: 28, Email: alice.brown@example.com
-5. Nom: Charlie Davis, Âge: 40, Email: charlie.davis@example.com
+Nom: John Doe
+Age: 30
+Email: john.doe@example.com
+
+Nom: Jane Smith
+Age: 25
+Email: jane.smith@example.com
+
+Nom: Bob Johnson
+Age: 35
+Email: bob.johnson@example.com
+
+Nom: Alice Brown
+Age: 28
+Email: alice.brown@example.com
+
+Nom: Charlie Davis
+Age: 40
+Email: charlie.davis@example.com
 
 
+rechercher des lignes contenant l'âge supérieur à 30 :
+grep -A 2 "Age: [3-9][0-9]" monfichier.txt
 
-grep "John" monfichier.txt
-grep -E "([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})"
-find /chemin/vers/le/dossier -name "*.txt"
-cut -d ',' -f 1 monfichier.txt
-grep "Age: 30" monfichier.txt | cut -d ',' -f 1
+
+rechercher tous les fichiers texte modifiés dans les 7 derniers jours :
+find /chemin/vers/le/dossier -type f -name "*.txt" -mtime -7
+
+
+pour extraire les noms des personnes dont l'âge est supérieur à 30 
+grep -B 1 -A 1 "Age: [4-9][0-9]" monfichier.txt | grep "Nom:" | cut -d ' ' -f 2-
+
+
+grep et cut pour extraire les adresses e-mail de personnes dont le nom commence par "J" :
+grep -B 1 "Nom: J" monfichier.txt | grep "Email:" | cut -d ' ' -f 2
+
+
