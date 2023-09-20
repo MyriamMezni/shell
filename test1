@@ -1,62 +1,13 @@
-#!/bin/bash
+1. Nom: John Doe, Âge: 30, Email: john.doe@example.com
+2. Nom: Jane Smith, Âge: 25, Email: jane.smith@example.com
+3. Nom: Bob Johnson, Âge: 35, Email: bob.johnson@example.com
+4. Nom: Alice Brown, Âge: 28, Email: alice.brown@example.com
+5. Nom: Charlie Davis, Âge: 40, Email: charlie.davis@example.com
 
-# Utilise zenity pour afficher un menu de sélection
-choice=$(zenity --list --title="Gestion de fichiers" --text="Choisissez une option :" --column="Options" "Créer un nouveau fichier" "Renommer un fichier" "Afficher les permissions d'un fichier" "Afficher les fichiers dans un répertoire" "Gérer les permissions d'un fichier" "Quitter")
 
-# Vérifie le choix de l'utilisateur et agit en conséquence
-case "$choice" in
-    "Créer un nouveau fichier")
-        new_file_name=$(zenity --entry --title="Nouveau fichier" --text="Entrez le nom du nouveau fichier:")
-        touch "$new_file_name"
-        zenity --info --title="Succès" --text="Fichier \"$new_file_name\" créé avec succès!"
-        ;;
-    "Renommer un fichier")
-        old_file_name=$(zenity --entry --title="Ancien nom" --text="Entrez le nom du fichier à renommer:")
-        new_name=$(zenity --entry --title="Nouveau nom" --text="Entrez le nouveau nom pour \"$old_file_name\":")
-        mv "$old_file_name" "$new_name"
-        zenity --info --title="Succès" --text="Fichier \"$old_file_name\" renommé en \"$new_name\" avec succès!"
-        ;;
-    "Afficher les permissions d'un fichier")
-        file_name=$(zenity --entry --title="Fichier" --text="Entrez le nom du fichier dont vous voulez afficher les permissions:")
-        
-        # Utilise la commande stat pour afficher les permissions du fichier
-        permissions=$(stat -c "%A %a %U" "$file_name")
-        
-        # Ajoute un bouton "Retour à la page d'accueil"
-        zenity --info --title="Permissions" --text="Permissions du fichier \"$file_name\":\n$permissions\n\nCliquez sur OK pour revenir à la page d'accueil."
-        ;;
-    "Afficher les fichiers dans un répertoire")
-        directory=$(zenity --file-selection --directory --title="Sélectionnez un répertoire")
-        
-        # Liste les fichiers dans le répertoire
-        files_list=$(ls -A "$directory")
-        zenity --info --title="Fichiers dans le répertoire" --text="Fichiers dans le répertoire \"$directory\":\n$files_list"
-        ;;
-    "Gérer les permissions d'un fichier")
-        file_name=$(zenity --entry --title="Fichier" --text="Entrez le nom du fichier dont vous voulez gérer les permissions:")
-        
-        # Affiche une interface graphique pour sélectionner les permissions
-        selected_permissions=$(zenity --list --title="Permissions" --text="Sélectionnez les nouvelles permissions :" --checklist --column="Choix" --column="Permission" FALSE "Lecture" FALSE "Écriture" FALSE "Exécution")
-        
-        # Convertit les choix en une chaîne de permissions
-        new_permissions=""
-        if [[ $selected_permissions == *"Lecture"* ]]; then
-            new_permissions+="r"
-        fi
-        if [[ $selected_permissions == *"Écriture"* ]]; then
-            new_permissions+="w"
-        fi
-        if [[ $selected_permissions == *"Exécution"* ]]; then
-            new_permissions+="x"
-        fi
-        
-        chmod "$new_permissions" "$file_name"
-        zenity --info --title="Succès" --text="Permissions du fichier \"$file_name\" modifiées avec succès!"
-        ;;
-    "Quitter")
-        zenity --info --title="Quitter" --text="Au revoir!"
-        ;;
-    *)
-        zenity --error --title="Erreur" --text="Choix non valide."
-        ;;
-esac
+
+grep "John" monfichier.txt
+grep -E "([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})"
+find /chemin/vers/le/dossier -name "*.txt"
+cut -d ',' -f 1 monfichier.txt
+grep "Age: 30" monfichier.txt | cut -d ',' -f 1
